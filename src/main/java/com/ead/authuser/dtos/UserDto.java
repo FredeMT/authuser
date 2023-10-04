@@ -6,6 +6,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -57,6 +59,7 @@ public class UserDto {
 	@JsonView({UserView.RegistrationPost.class, UserView.UserPut.class})
 	private String phoneNumber;
 	
+	@CPF(groups = {UserView.RegistrationPost.class, UserView.UserPut.class})
 	@JsonView({UserView.RegistrationPost.class, UserView.UserPut.class})
 	private String cpf;	
 	

@@ -13,5 +13,10 @@
     "name": "ead.api.url.course",
     "type": "java.lang.String",
     "description": "A description for 'ead.api.url.course'"
+  },
+  {
+    "name": "ead.broker.exchange.user-event",
+    "type": "java.lang.String",
+    "description": "A description for 'ead.broker.exchange.user-event'"
   }
 ]}
