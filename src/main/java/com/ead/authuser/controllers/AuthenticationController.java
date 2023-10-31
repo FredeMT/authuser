@@ -3,10 +3,16 @@ package com.ead.authuser.controllers;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ead.authuser.configs.security.JwtProvider;
+import com.ead.authuser.dtos.JwtDto;
+import com.ead.authuser.dtos.LoginDto;
 import com.ead.authuser.dtos.UserDto;
 import com.ead.authuser.dtos.UserDto.UserView;
 import com.ead.authuser.enums.RoleType;
@@ -44,6 +53,12 @@ public class AuthenticationController {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	JwtProvider jwtProvider;
+	
+	@Autowired
+	AuthenticationManager authenticationManager;
+	
 	@PostMapping("/signup")
 	public ResponseEntity<Object> registerUser(@RequestBody @Validated(UserDto.UserView.RegistrationPost.class)
 													@JsonView(UserView.RegistrationPost.class) UserDto userDto){
@@ -70,6 +85,19 @@ public class AuthenticationController {
 		log.debug("POST registerUser userModel saved {}", userModel.toString());
 		log.info("User saved successfully - userId {}", userModel.getUserId());
 		return ResponseEntity.status(HttpStatus.CREATED).body(userModel);
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<JwtDto> authenticateUser(@Valid @RequestBody LoginDto loginDto){
+		//No authenticationManager é feita a autenticacao passando login e senha, retornando o authentication object.
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+		//Define (seta) no Spring Security Context o authentication object.
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		//Gera o JWT com os dados do authentication object definidos no Spring Security Context retornando uma string.
+		String jwt = jwtProvider.generateJwt(authentication);
+		//Retorna o JWT no body para o client.
+		return ResponseEntity.ok(new JwtDto(jwt));
 	}
 
 	
