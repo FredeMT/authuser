@@ -3,4 +3,4 @@ spring:
     name: ead-authuser-service
   profiles:
     active:
-    - dev
+    - prod
