@@ -2,9 +2,9 @@ package com.ead.authuser.dtos;
 
 import java.util.UUID;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.br.CPF;
 

@@ -3,7 +3,7 @@ package com.ead.authuser.controllers;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

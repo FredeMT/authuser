@@ -1,6 +1,6 @@
 package com.ead.authuser.dtos;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 import lombok.Data;
 
